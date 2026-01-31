@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "cmd",
+      "args": ["/c", "npx", "shadcn@latest", "mcp"]
+    },
+    "hugeicons": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@hugeicons/mcp-server"]
+    }
+  }
+}

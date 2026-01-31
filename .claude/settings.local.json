@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:wasealex.github.io)",
+      "mcp__shadcn__get_project_registries",
+      "mcp__shadcn__search_items_in_registries",
+      "mcp__shadcn__list_items_in_registries",
+      "WebSearch",
+      "mcp__shadcn__get_item_examples_from_registries",
+      "mcp__shadcn__view_items_in_registries",
+      "mcp__hugeicons__search_icons",
+      "Bash(npm run dev:*)",
+      "mcp__hugeicons__list_icons",
+      "Bash(for file in stats-section.tsx role-dashboards-section.tsx workflow-section.tsx technical-trust-section.tsx testimonials-section.tsx faq-section.tsx)",
+      "Bash(do sed -i 's/<div className=\"\"container relative z-10 px-4\"\">/<div className=\"\"container relative z-10 px-4 max-w-7xl mx-auto\"\">/g' \"$file\")",
+      "Bash(done)",
+      "Bash(timeout /t 8)",
+      "Bash(taskkill:*)",
+      "Bash(if exist \".next\\\\dev\\\\lock\" del /F /Q \".next\\\\dev\\\\lock\")",
+      "Bash(npx shadcn@latest add:*)",
+      "mcp__shadcn__get_add_command_for_items",
+      "mcp__hugeicons__get_icon_glyphs"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "shadcn",
+    "hugeicons"
+  ]
+}
