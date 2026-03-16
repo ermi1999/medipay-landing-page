@@ -19,7 +19,9 @@
       "Bash(if exist \".next\\\\dev\\\\lock\" del /F /Q \".next\\\\dev\\\\lock\")",
       "Bash(npx shadcn@latest add:*)",
       "mcp__shadcn__get_add_command_for_items",
-      "mcp__hugeicons__get_icon_glyphs"
+      "mcp__hugeicons__get_icon_glyphs",
+      "Bash(grep:*)",
+      "Bash(cd:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

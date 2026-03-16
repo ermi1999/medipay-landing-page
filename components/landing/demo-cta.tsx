@@ -38,6 +38,8 @@ export function DemoCTA({
 }: DemoCTAProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
@@ -87,20 +89,40 @@ export function DemoCTA({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (validateForm()) {
-      // TODO: Send to backend API
-      console.log("Demo request:", formData);
-      setIsSubmitted(true);
+      setIsLoading(true);
+      setSubmitError(null);
 
-      // Reset after 5 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({ name: "", email: "", phone: "", company: "", message: "" });
-        setIsOpen(false);
-      }, 5000);
+      try {
+        const res = await fetch("/api/demo-request", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || "Failed to submit request");
+        }
+
+        setIsSubmitted(true);
+
+        // Reset after 5 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({ name: "", email: "", phone: "", company: "", message: "" });
+          setIsOpen(false);
+        }, 5000);
+      } catch (err) {
+        setSubmitError(
+          err instanceof Error ? err.message : "Something went wrong. Please try again."
+        );
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -111,6 +133,7 @@ export function DemoCTA({
       setTimeout(() => {
         setIsSubmitted(false);
         setErrors({});
+        setSubmitError(null);
       }, 300);
     }
   };
@@ -346,8 +369,14 @@ export function DemoCTA({
                     />
                   </div>
 
-                  <Button type="submit" className="w-full" size="lg">
-                    Request Demo
+                  {submitError && (
+                    <p className="text-sm text-destructive text-center">
+                      {submitError}
+                    </p>
+                  )}
+
+                  <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+                    {isLoading ? "Submitting..." : "Request Demo"}
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground">
