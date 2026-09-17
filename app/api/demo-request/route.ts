@@ -24,9 +24,9 @@ export async function POST(request: Request) {
     }
 
     // Parse recipient emails from env
-    const recipientEmails = process.env.RECIPIENT_EMAILS?.split(",").map((e) =>
-      e.trim()
-    );
+    const recipientEmails = process.env.RECIPIENT_EMAILS?.split(",")
+      .map((e) => e.trim())
+      .filter(Boolean);
 
     if (!recipientEmails || recipientEmails.length === 0) {
       console.error("RECIPIENT_EMAILS environment variable is not configured");
@@ -36,9 +36,14 @@ export async function POST(request: Request) {
       );
     }
 
+    // A malformed address would make Resend reject the whole send, losing the
+    // notification entirely, so only set reply-to when it is well-formed.
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
     const { data, error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || "MediPay <onboarding@resend.dev>",
       to: recipientEmails,
+      ...(isValidEmail && { replyTo: email }),
       subject: `New Demo Request from ${name} - ${company}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
